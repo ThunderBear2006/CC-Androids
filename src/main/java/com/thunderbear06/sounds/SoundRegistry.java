@@ -17,6 +17,6 @@ public class SoundRegistry {
     }
 
     public static void register() {
-        CCAndroids.LOGGER.info("SoundRegistry Initialized");
+        CCAndroids.LOGGER.info("Registered Sound Events");
     }
 }

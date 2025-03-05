@@ -1,7 +1,8 @@
-package com.thunderbear06.entity.android;
+package com.thunderbear06.entity.android.frame;
 
 import com.thunderbear06.CCAndroids;
 import com.thunderbear06.entity.EntityRegistry;
+import com.thunderbear06.entity.android.BaseAndroidEntity;
 import com.thunderbear06.item.ItemRegistry;
 import dan200.computercraft.shared.computer.core.ComputerFamily;
 import net.minecraft.entity.Entity;
@@ -26,6 +27,8 @@ import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 public class AndroidFrame extends MobEntity {
+    private static final TrackedData<Byte> BUILD_PROGRESS = DataTracker.registerData(AndroidFrame.class, TrackedDataHandlerRegistry.BYTE);
+
     private static final TrackedData<Byte> COMPONENTS_NEEDED = DataTracker.registerData(AndroidFrame.class, TrackedDataHandlerRegistry.BYTE);
     private static final TrackedData<Byte> INGOTS_NEEDED = DataTracker.registerData(AndroidFrame.class, TrackedDataHandlerRegistry.BYTE);
     private static final TrackedData<Boolean> HAS_CORE = DataTracker.registerData(AndroidFrame.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -40,8 +43,10 @@ public class AndroidFrame extends MobEntity {
     @Override
     protected void initDataTracker() {
         super.initDataTracker();
-        this.dataTracker.startTracking(COMPONENTS_NEEDED, CCAndroids.Config.CompsForConstruction);
-        this.dataTracker.startTracking(INGOTS_NEEDED, CCAndroids.Config.IngotsForConstruction);
+        this.dataTracker.startTracking(BUILD_PROGRESS, (byte) 0);
+
+        this.dataTracker.startTracking(COMPONENTS_NEEDED, CCAndroids.CONFIG.CompsForConstruction);
+        this.dataTracker.startTracking(INGOTS_NEEDED, CCAndroids.CONFIG.IngotsForConstruction);
         this.dataTracker.startTracking(HAS_CORE, false);
     }
 
@@ -81,6 +86,14 @@ public class AndroidFrame extends MobEntity {
         return ActionResult.FAIL;
     }
 
+    public void incrementProgress(int inc) {
+        setBuildProgress(this.dataTracker.get(BUILD_PROGRESS) + inc);
+    }
+
+    private void setBuildProgress(int progress) {
+        this.dataTracker.set(BUILD_PROGRESS, (byte) progress);
+    }
+
     private void onSuccess(ItemStack stack, PlayerEntity player, Hand hand) {
         stack.decrement(1);
         player.setStackInHand(hand, stack);
@@ -112,7 +125,7 @@ public class AndroidFrame extends MobEntity {
             return false;
 
         if (isGold && !this.isAdvanced) {
-            if (getIngotsNeeded() < CCAndroids.Config.IngotsForConstruction)
+            if (getIngotsNeeded() < CCAndroids.CONFIG.IngotsForConstruction)
                 return false;
             this.isAdvanced = true;
         }
@@ -261,13 +274,13 @@ public class AndroidFrame extends MobEntity {
 
     @Override
     protected void dropInventory() {
-        byte components_dropped = (byte) (CCAndroids.Config.CompsForConstruction - getComponentsNeeded());
+        byte components_dropped = (byte) (CCAndroids.CONFIG.CompsForConstruction - getComponentsNeeded());
 
         for (int i = 0; i < components_dropped; i++) {
             this.dropStack(new ItemStack(ItemRegistry.COMPONENTS));
         }
 
-        int ingots_dropped = CCAndroids.Config.IngotsForConstruction - getIngotsNeeded();
+        int ingots_dropped = CCAndroids.CONFIG.IngotsForConstruction - getIngotsNeeded();
 
         for (int j = 0; j < ingots_dropped; j++) {
             this.dropStack(new ItemStack(this.isAdvanced ? Items.GOLD_INGOT : Items.IRON_INGOT));

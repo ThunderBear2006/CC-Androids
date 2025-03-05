@@ -1,7 +1,7 @@
 package com.thunderbear06.item;
 
 import com.thunderbear06.entity.EntityRegistry;
-import com.thunderbear06.entity.android.AndroidFrame;
+import com.thunderbear06.entity.android.frame.AndroidFrame;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.Item;

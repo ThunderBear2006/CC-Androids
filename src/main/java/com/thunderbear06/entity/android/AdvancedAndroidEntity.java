@@ -18,10 +18,10 @@ public class AdvancedAndroidEntity extends AndroidEntity{
 
     public static DefaultAttributeContainer.Builder createAndroidAttributes() {
         return createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, CCAndroids.Config.AdvAndroidMaxHealth)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, CCAndroids.Config.AdvAndroidDamage)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, CCAndroids.Config.AdvAndroidSpeed)
-                .add(EntityAttributes.GENERIC_ARMOR, CCAndroids.Config.AdvAndroidArmor);
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, CCAndroids.CONFIG.AdvAndroidMaxHealth)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, CCAndroids.CONFIG.AdvAndroidDamage)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, CCAndroids.CONFIG.AdvAndroidSpeed)
+                .add(EntityAttributes.GENERIC_ARMOR, CCAndroids.CONFIG.AdvAndroidArmor);
     }
 
     @Override
@@ -36,6 +36,6 @@ public class AdvancedAndroidEntity extends AndroidEntity{
 
     @Override
     protected void dropIngots(boolean full) {
-        this.dropStack(Items.GOLD_INGOT.getDefaultStack().copyWithCount((int) (CCAndroids.Config.IngotsForConstruction * (full ? 1.0 : 0.5))));
+        this.dropStack(Items.GOLD_INGOT.getDefaultStack().copyWithCount((int) (CCAndroids.CONFIG.IngotsForConstruction * (full ? 1.0 : 0.5))));
     }
 }

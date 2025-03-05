@@ -62,7 +62,7 @@ public class AndroidMenu extends AbstractComputerMenu {
     private ItemStack tryItemMerge(PlayerEntity player, int slotNum, int firstSlot, int lastSlot, boolean reverse) {
         var slot = slots.get(slotNum);
         var originalStack = ItemStack.EMPTY;
-        if (slot != null && slot.hasStack()) {
+        if (slot.hasStack()) {
             var clickedStack = slot.getStack();
             originalStack = clickedStack.copy();
             if (!insertItem(clickedStack, firstSlot, lastSlot, reverse)) {

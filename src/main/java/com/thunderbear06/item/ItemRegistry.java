@@ -56,5 +56,6 @@ public class ItemRegistry {
 
     public static void register() {
         Registry.register(Registries.ITEM_GROUP, new Identifier(CCAndroids.MOD_ID, "androids_item_group"), ANDROIDS_ITEM_GROUP);
+        CCAndroids.LOGGER.info("Registered Items");
     }
 }

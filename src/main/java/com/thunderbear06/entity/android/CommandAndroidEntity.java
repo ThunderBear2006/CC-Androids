@@ -18,10 +18,10 @@ public class CommandAndroidEntity extends AdvancedAndroidEntity{
 
     public static DefaultAttributeContainer.Builder createAndroidAttributes() {
         return createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, CCAndroids.Config.ComAndroidMaxHealth)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, CCAndroids.Config.ComAndroidDamage)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, CCAndroids.Config.ComAndroidSpeed)
-                .add(EntityAttributes.GENERIC_ARMOR, CCAndroids.Config.ComAndroidArmor);
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, CCAndroids.CONFIG.ComAndroidMaxHealth)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, CCAndroids.CONFIG.ComAndroidDamage)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, CCAndroids.CONFIG.ComAndroidSpeed)
+                .add(EntityAttributes.GENERIC_ARMOR, CCAndroids.CONFIG.ComAndroidArmor);
     }
 
     @Override

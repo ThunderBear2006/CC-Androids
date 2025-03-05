@@ -1,7 +1,7 @@
 package com.thunderbear06.entity.render;
 
 import com.thunderbear06.CCAndroids;
-import com.thunderbear06.entity.android.AndroidFrame;
+import com.thunderbear06.entity.android.frame.AndroidFrame;
 import com.thunderbear06.entity.model.AndroidFrameEntityModel;
 import net.minecraft.client.render.entity.BipedEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;

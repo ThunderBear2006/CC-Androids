@@ -19,7 +19,7 @@ public class CCAndroids implements ModInitializer {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static CCAndroidsConfig Config;
+	public static CCAndroidsConfig CONFIG;
 
 	@Override
 	public void onInitialize() {
@@ -28,7 +28,8 @@ public class CCAndroids implements ModInitializer {
 			return brain == null ? null : new AndroidAPI(brain);
 		});
 
-		Config = ConfigLoader.loadConfig(MOD_ID, new CCAndroidsConfig());
+		CONFIG = ConfigLoader.loadConfig(MOD_ID, new CCAndroidsConfig());
+		LOGGER.info("Loaded Config File");
 
 		MenuRegistry.register();
 		ItemRegistry.register();

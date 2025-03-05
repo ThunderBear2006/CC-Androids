@@ -1,7 +1,7 @@
 package com.thunderbear06.item;
 
 import com.thunderbear06.entity.android.AndroidEntity;
-import com.thunderbear06.entity.android.AndroidFrame;
+import com.thunderbear06.entity.android.frame.AndroidFrame;
 import com.thunderbear06.entity.android.CommandAndroidEntity;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;

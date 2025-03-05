@@ -2,6 +2,7 @@ package com.thunderbear06.entity;
 
 import com.thunderbear06.CCAndroids;
 import com.thunderbear06.entity.android.*;
+import com.thunderbear06.entity.android.frame.AndroidFrame;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.EntityType;
@@ -43,6 +44,7 @@ public class EntityRegistry {
     public static void register() {
         registerAttributes();
         registerSpawns();
+        CCAndroids.LOGGER.info("Registered Entities");
     }
 
     private static void registerAttributes() {

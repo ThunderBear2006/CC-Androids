@@ -1,5 +1,6 @@
 package com.thunderbear06.menu;
 
+import com.thunderbear06.CCAndroids;
 import dan200.computercraft.shared.network.container.ComputerContainerData;
 import dan200.computercraft.shared.network.container.ContainerData;
 import dan200.computercraft.shared.platform.PlatformHelper;
@@ -16,5 +17,6 @@ public class MenuRegistry {
 
     public static void register() {
         REGISTRY.register();
+        CCAndroids.LOGGER.info("Registered Menus");
     }
 }

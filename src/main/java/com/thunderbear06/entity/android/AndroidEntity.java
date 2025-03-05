@@ -6,11 +6,11 @@ import com.thunderbear06.ai.AndroidLookAtEntityGoal;
 import com.thunderbear06.ai.task.TaskManager;
 import com.thunderbear06.ai.task.tasks.*;
 import com.thunderbear06.entity.EntityRegistry;
+import com.thunderbear06.entity.android.frame.AndroidFrame;
 import com.thunderbear06.item.ItemRegistry;
 import com.thunderbear06.sounds.SoundRegistry;
 import dan200.computercraft.shared.computer.core.ComputerFamily;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -61,10 +61,10 @@ public class AndroidEntity extends BaseAndroidEntity {
 
     public static DefaultAttributeContainer.Builder createAndroidAttributes() {
         return createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, CCAndroids.Config.AndroidMaxHealth)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, CCAndroids.Config.AndroidDamage)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, CCAndroids.Config.AndroidSpeed)
-                .add(EntityAttributes.GENERIC_ARMOR, CCAndroids.Config.AndroidArmor);
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, CCAndroids.CONFIG.AndroidMaxHealth)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, CCAndroids.CONFIG.AndroidDamage)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, CCAndroids.CONFIG.AndroidSpeed)
+                .add(EntityAttributes.GENERIC_ARMOR, CCAndroids.CONFIG.AndroidArmor);
     }
 
     protected void addAndroidTasks() {
@@ -238,11 +238,11 @@ public class AndroidEntity extends BaseAndroidEntity {
     }
 
     protected void dropIngots(boolean full) {
-        this.dropStack(Items.IRON_INGOT.getDefaultStack().copyWithCount((int) (CCAndroids.Config.IngotsForConstruction * (full ? 1.0 : CCAndroids.Config.IngotsDroppedOnDeathPercentage))));
+        this.dropStack(Items.IRON_INGOT.getDefaultStack().copyWithCount((int) (CCAndroids.CONFIG.IngotsForConstruction * (full ? 1.0 : CCAndroids.CONFIG.IngotsDroppedOnDeathPercentage))));
     }
 
     protected void dropComponents(boolean full) {
-        this.dropStack(ItemRegistry.COMPONENTS.getDefaultStack().copyWithCount((int) (CCAndroids.Config.CompsForConstruction * (full ? 1.0 : CCAndroids.Config.CompsDroppedOnDeathPercentage))));
+        this.dropStack(ItemRegistry.COMPONENTS.getDefaultStack().copyWithCount((int) (CCAndroids.CONFIG.CompsForConstruction * (full ? 1.0 : CCAndroids.CONFIG.CompsDroppedOnDeathPercentage))));
     }
 
     @Override
