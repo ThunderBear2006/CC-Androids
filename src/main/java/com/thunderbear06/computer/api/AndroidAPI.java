@@ -329,4 +329,16 @@ public class AndroidAPI implements ILuaAPI {
         this.brain.getAndroid().sendChatMessage(what);
         return MethodResult.of();
     }
+
+    @LuaFunction
+    public final MethodResult changeFace(String faceName) {
+        this.brain.getAndroid().setFace(faceName);
+        return MethodResult.of();
+    }
+
+    @LuaFunction
+    public final MethodResult cancelTask() {
+        this.brain.getAndroid().getTaskManager().clearCurrentTask();
+        return MethodResult.of();
+    }
 }

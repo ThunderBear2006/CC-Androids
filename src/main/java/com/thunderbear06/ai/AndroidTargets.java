@@ -9,12 +9,10 @@ public class AndroidTargets {
     private BlockPos blockTarget = null;
 
     public void setEntityTarget(LivingEntity entity) {
-        CCAndroids.LOGGER.info("Set android entity target to {}", entity == null ? "null" : entity.getName().getString());
         this.entityTarget = entity;
     }
 
     public void setBlockTarget(BlockPos pos) {
-        CCAndroids.LOGGER.info("Set android block target to {}", pos == null ? "null" : pos.toString());
         this.blockTarget = pos;
     }
 

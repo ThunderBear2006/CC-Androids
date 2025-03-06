@@ -57,14 +57,13 @@ public class AndroidComputerContainer {
 
         EntityComputer computer = getOrCreateServerComputer();
 
-        if (startOn || (fresh && isOn)) {
+        if (startOn) {
             turnOn(computer);
             startOn = false;
         }
 
         fresh = false;
         computerID = computer.getID();
-        isOn = computer.isOn();
 
         updateOwnerLabel(computer);
 
@@ -82,6 +81,7 @@ public class AndroidComputerContainer {
 
         computerID = computer.getID();
         android.isOn = true;
+        isOn = true;
 
         onHandItemChanged(Hand.MAIN_HAND);
         onHandItemChanged(Hand.OFF_HAND);
@@ -148,6 +148,11 @@ public class AndroidComputerContainer {
         computer.setPeripheral(side, peripheral);
     }
 
+    public boolean isOn() {
+        EntityComputer computer = getServerComputer();
+        return computer != null && computer.isOn();
+    }
+
     public ComputerFamily getFamily() {
         return family;
     }
@@ -178,16 +183,19 @@ public class AndroidComputerContainer {
     }
 
     @Nullable
-    public ServerComputer getServerComputer() {
-        return !android.getWorld().isClient && android.getWorld().getServer() != null ? ServerContext.get(android.getWorld().getServer()).registry().get(instanceID) : null;
+    public EntityComputer getServerComputer() {
+        return !android.getWorld().isClient && android.getWorld().getServer() != null ? (EntityComputer) ServerContext.get(android.getWorld().getServer()).registry().get(instanceID) : null;
     }
 
     public void writeNbt(NbtCompound computerCompound) {
+        computerCompound.putBoolean("StartOn", startOn);
         computerCompound.putInt("ComputerID", getComputerID());
     }
 
     public void readNbt(NbtCompound computerCompound) {
-        setComputerID(computerCompound.getInt("ComputerID"));
+        startOn = computerCompound.getBoolean("StartOn");
+        if (computerCompound.contains("ComputerID"))
+            setComputerID(computerCompound.getInt("ComputerID"));
     }
 
     public void getUpgradePeripherals() {

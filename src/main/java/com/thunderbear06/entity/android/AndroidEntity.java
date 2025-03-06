@@ -40,6 +40,7 @@ public class AndroidEntity extends BaseAndroidEntity {
     protected final TaskManager taskManager;
     private static final TrackedData<Boolean> IS_LOCKED = DataTracker.registerData(AndroidEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Byte> VARIANT = DataTracker.registerData(AndroidEntity.class, TrackedDataHandlerRegistry.BYTE);
+    private static final TrackedData<Byte> FACE = DataTracker.registerData(AndroidEntity.class, TrackedDataHandlerRegistry.BYTE);
 
     public AndroidEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
         super(entityType, world);
@@ -57,6 +58,7 @@ public class AndroidEntity extends BaseAndroidEntity {
         super.initDataTracker();
         this.dataTracker.startTracking(IS_LOCKED, false);
         this.dataTracker.startTracking(VARIANT, (byte) 0);
+        this.dataTracker.startTracking(FACE, (byte) 0);
     }
 
     public static DefaultAttributeContainer.Builder createAndroidAttributes() {
@@ -171,6 +173,23 @@ public class AndroidEntity extends BaseAndroidEntity {
 
     public boolean hasVariant() {
         return getVariant() > 0;
+    }
+
+    public void setFace(String faceName) {
+        byte face = switch (faceName) {
+            case "anger" -> 1;
+            case "annoyed" -> 2;
+            case "happy" -> 3;
+            case "sad" -> 4;
+            case "woozy" -> 5;
+            default -> 0;
+        };
+
+        this.dataTracker.set(FACE, face);
+    }
+
+    public byte getFace() {
+        return this.dataTracker.get(FACE);
     }
 
     public void deconstruct() {
