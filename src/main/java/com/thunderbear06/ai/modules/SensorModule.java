@@ -2,17 +2,16 @@ package com.thunderbear06.ai.modules;
 
 import com.thunderbear06.ai.AndroidBrain;
 import com.thunderbear06.entity.android.BaseAndroidEntity;
-import dan200.computercraft.shared.computer.items.AbstractComputerItem;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
+import com.thunderbear06.entity.player.AndroidPlayer;
+import dan200.computercraft.api.lua.LuaException;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.LockableContainerBlockEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.TargetPredicate;
-import net.minecraft.item.Item;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -40,13 +39,15 @@ public class SensorModule extends AbstractAndroidModule {
         List<HashMap<String, Object>> result = new ArrayList<>();
 
         this.android.getWorld().getEntitiesByClass(LivingEntity.class, this.android.getBoundingBox().expand(this.entitySearchRadius), getTypePredicate(type)).forEach(entity -> {
-            result.add(collectEntityInfo(entity));
+            try {
+                result.add(collectEntityInfo(entity));
+            } catch (LuaException ignored) {}
         });
 
         return result;
     }
 
-    public HashMap<String, Object> getClosestMobOfType(@Nullable String type) {
+    public HashMap<String, Object> getClosestMobOfType(@Nullable String type) throws LuaException {
         BlockPos pos = this.android.getBlockPos();
 
         Entity entity = this.android.getWorld().getClosestEntity(
@@ -65,28 +66,13 @@ public class SensorModule extends AbstractAndroidModule {
         return collectEntityInfo(entity);
     }
 
-    public HashMap<String, Object> getClosestPlayer() {
+    public HashMap<String, Object> getClosestPlayer() throws LuaException {
         ServerPlayerEntity player = (ServerPlayerEntity) this.android.getWorld().getClosestPlayer(this.android, 100);
 
         if (player == null)
             return new HashMap<>();
 
         return collectEntityInfo(player);
-    }
-
-    public List<HashMap<String, Object>> getGroundItems(@Nullable String type, int max) {
-        List<ItemEntity> list = this.android.getWorld().getNonSpectatingEntities(ItemEntity.class, this.android.getBoundingBox().expand(5));
-        List<HashMap<String, Object>> results = new ArrayList<>();
-
-        for (ItemEntity entity : list) {
-            if (results.size() >= max)
-                break;
-            if (type == null || entity.getStack().getItem().getName().getString().equals(type)) {
-                results.add(collectEntityInfo(entity));
-            }
-        }
-
-        return results;
     }
 
     public @Nullable ItemEntity getGroundItem(@Nullable String type) {
@@ -124,7 +110,10 @@ public class SensorModule extends AbstractAndroidModule {
         return blocks;
     }
 
-    public HashMap<String, Object> collectEntityInfo(Entity entity) {
+    public HashMap<String, Object> collectEntityInfo(Entity entity) throws LuaException {
+        if (!entity.getBlockPos().isWithinDistance(android.getPos(), android.getEntitySearchRadius()))
+            throw new LuaException("Entity out of range");
+
         HashMap<String, Object> infoMap = new HashMap<>();
 
         infoMap.put("uuid", entity.getUuidAsString());
@@ -143,13 +132,46 @@ public class SensorModule extends AbstractAndroidModule {
         if (type == null) {
             return (entity -> entity != this.android && this.android.canSee(entity));
         } else {
-            return (entity -> {
-                return EntityType.getId(entity.getType()).toString().contains(type)
-                        && entity != this.android
-                        && !entity.isSpectator()
-                        && entity.isAlive()
-                        && this.android.canSee(entity);
-            });
+            return (entity -> EntityType.getId(entity.getType()).toString().contains(type)
+                    && entity != this.android
+                    && !entity.isSpectator()
+                    && entity.isAlive()
+                    && this.android.canSee(entity));
         }
+    }
+
+    public HashMap<String, Object> GetContainerInfo(BlockPos pos) throws LuaException {
+        if (!pos.isWithinDistance(android.getPos(), android.getBlockSearchRadius()))
+            throw new LuaException("Position out of range");
+
+        ServerPlayerEntity androidPlr = AndroidPlayer.get(brain).player();
+
+        BlockEntity blockEntity = android.getWorld().getBlockEntity(pos);
+
+        HashMap<String, Object> infoMap = new HashMap<>();
+
+        if (!(blockEntity instanceof Inventory inv))
+            return infoMap;
+
+        infoMap.put("slotCount", inv.size());
+        infoMap.put("locked", blockEntity instanceof LockableContainerBlockEntity locked && !locked.checkUnlocked(androidPlr));
+
+        List<List<Object>> items = new ArrayList<>();
+
+        for (int i = 0; i < inv.size(); i++)
+        {
+            ItemStack stack = inv.getStack(i);
+
+            List<Object> itemInfo = new ArrayList<>();
+
+            itemInfo.add(stack.getName().toString());
+            itemInfo.add(stack.getCount());
+
+            items.add((itemInfo));
+        }
+
+        infoMap.put("slots", items);
+
+        return infoMap;
     }
 }

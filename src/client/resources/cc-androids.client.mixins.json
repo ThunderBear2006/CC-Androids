@@ -2,9 +2,7 @@
 	"required": true,
 	"package": "com.thunderbear06.mixin.client",
 	"compatibilityLevel": "JAVA_17",
-	"client": [
-		"ExampleClientMixin"
-	],
+	"client": [],
 	"injectors": {
 		"defaultRequire": 1
 	}

@@ -177,7 +177,7 @@ public class AndroidEntity extends BaseAndroidEntity {
 
     public void setFace(String faceName) {
         byte face = switch (faceName) {
-            case "anger" -> 1;
+            case "angry" -> 1;
             case "annoyed" -> 2;
             case "happy" -> 3;
             case "sad" -> 4;

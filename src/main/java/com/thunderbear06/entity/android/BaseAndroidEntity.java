@@ -2,6 +2,8 @@ package com.thunderbear06.entity.android;
 
 import com.thunderbear06.ai.AndroidBrain;
 import com.thunderbear06.computer.AndroidComputerContainer;
+import com.thunderbear06.computer.EntityComputer;
+import com.thunderbear06.entity.player.AndroidPlayer;
 import com.thunderbear06.inventory.AndroidInventory;
 import com.thunderbear06.item.ItemRegistry;
 import com.thunderbear06.tags.TagRegistry;
@@ -11,11 +13,8 @@ import dan200.computercraft.api.peripheral.PeripheralLookup;
 import dan200.computercraft.core.computer.ComputerSide;
 import dan200.computercraft.shared.computer.core.ComputerFamily;
 import dan200.computercraft.shared.computer.core.ServerComputer;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.DoorBlock;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.pathing.MobNavigation;
-import net.minecraft.entity.ai.pathing.PathNode;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -23,16 +22,16 @@ import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.text.Text;
+import net.minecraft.network.message.MessageType;
+import net.minecraft.network.message.SignedMessage;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class BaseAndroidEntity extends PathAwareEntity {
     public AndroidBrain brain;
@@ -64,7 +63,7 @@ public class BaseAndroidEntity extends PathAwareEntity {
     public void tickMovement() {
         super.tickMovement();
 
-        this.openNaNoor();
+        brain.getModules().interactionModule.tickDoorInteraction();
     }
 
     @Override
@@ -173,40 +172,6 @@ public class BaseAndroidEntity extends PathAwareEntity {
         return this.computerContainer;
     }
 
-    // Action
-
-    public void sendChatMessage(String msg) {
-        Text message = Text.literal(this.getName().getString() + ": " + msg);
-
-        this.getWorld().getPlayers().forEach(player -> {
-            if (this.getBlockPos().isWithinDistance(player.getBlockPos(), 50))
-                player.sendMessage(message);
-        });
-    }
-
-    private void openNaNoor() {
-        MobNavigation nav = (MobNavigation) this.getNavigation();
-
-        if (nav.isIdle() || nav.getCurrentPath() == null)
-            return;
-        PathNode node = nav.getCurrentPath().getCurrentNode();
-        PathNode lastNode = nav.getCurrentPath().getLastNode();
-
-        handleDoor(node, true);
-        if (lastNode != null && lastNode.previous != null)
-            handleDoor(lastNode.previous, false);
-    }
-
-    private void handleDoor(PathNode node, boolean open) {
-        BlockPos pos = new BlockPos(node.x, node.y, node.z);
-        BlockState state = this.getWorld().getBlockState(pos);
-
-        if (state.isIn(BlockTags.WOODEN_DOORS)) {
-            DoorBlock door = (DoorBlock) state.getBlock();
-            door.setOpen(this, this.getWorld(), state, pos, open);
-        }
-    }
-
     // Inventory
     public MethodResult pickupGroundItem(ItemEntity itemEntity) {
         if (itemEntity.isRemoved())
@@ -285,9 +250,9 @@ public class BaseAndroidEntity extends PathAwareEntity {
             int space = storedStack.getMaxCount() - storedStack.getCount();
             int transfer = Math.min(stack.getCount(), space);
 
-            this.inventory.setStack(index, stack.copyWithCount(transfer));
+            storedStack.increment(transfer);
 
-            stack.setCount(stack.getCount() - transfer);
+            stack.decrement(transfer);
         }
 
         return stack.isEmpty() ? ItemStack.EMPTY : stack;
@@ -318,6 +283,31 @@ public class BaseAndroidEntity extends PathAwareEntity {
             return MethodResult.of("Index is occupied by another item stack!");
 
         return null;
+    }
+
+    // Chat
+
+    public void sendChatMessage(String msg) {
+        if (getServer() == null)
+            return;
+
+        AndroidPlayer player = AndroidPlayer.get(brain);
+
+        getServer().getPlayerManager().broadcast(SignedMessage.ofUnsigned(msg), player.player(), MessageType.params(MessageType.CHAT, this));
+    }
+
+    public void readChatMessage(String msg, String senderName, UUID senderUUID) {
+        if (!isOn)
+            return;
+
+        EntityComputer computer = getComputer().getServerComputer();
+
+        if (computer == null)
+            return;
+
+        computer.queueEvent("onChatMessage", new Object[]{
+                msg, senderName, senderUUID.toString()
+        });
     }
 
     // Misc

@@ -37,7 +37,8 @@ public class AndroidTargets {
     }
 
     public void clearTargets(){
-        CCAndroids.LOGGER.info("Cleared android targets");
+        if (CCAndroids.CONFIG.DebugLogging)
+            CCAndroids.LOGGER.info("Cleared android targets");
         this.entityTarget = null;
         this.blockTarget = null;
     }

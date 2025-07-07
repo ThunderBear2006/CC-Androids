@@ -23,11 +23,7 @@
 		]
 	},
 	"mixins": [
-		"cc-androids.mixins.json",
-		{
-			"config": "cc-androids.client.mixins.json",
-			"environment": "client"
-		}
+		"cc-androids.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.16.10",

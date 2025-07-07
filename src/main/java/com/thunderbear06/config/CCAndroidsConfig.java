@@ -1,6 +1,8 @@
 package com.thunderbear06.config;
 
 public class CCAndroidsConfig implements ConfigLoader.ConfigState {
+    public boolean DebugLogging = false;
+
     public byte CompsForConstruction = 8;
     public byte IngotsForConstruction = 10;
 

@@ -36,7 +36,8 @@ public class AndroidBrain {
     }
 
     public void setTask(String taskName) {
-        CCAndroids.LOGGER.info("Set current android task to {}", taskName);
+        if (CCAndroids.CONFIG.DebugLogging)
+            CCAndroids.LOGGER.info("Set current android task to {}", taskName);
         this.android.getTaskManager().setCurrentTask(taskName);
     }
 
