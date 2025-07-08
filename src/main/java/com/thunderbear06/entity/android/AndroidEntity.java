@@ -32,9 +32,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
-
+import org.jetbrains.annotations.Nullable;
 
 public class AndroidEntity extends BaseAndroidEntity {
     protected final TaskManager taskManager;

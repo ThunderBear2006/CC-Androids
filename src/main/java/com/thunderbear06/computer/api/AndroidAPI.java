@@ -275,7 +275,7 @@ public class AndroidAPI implements ILuaAPI {
         ItemStack heldStack = this.brain.getAndroid().getMainHandStack();
 
         if (heldStack.isEmpty())
-            return MethodResult.of(true, "Hand it empty");
+            return MethodResult.of(true, "Hand is empty");
 
         if (!this.brain.getAndroid().addFuel(amt.orElse(heldStack.getCount()), heldStack))
             return MethodResult.of(true, "Held item stack cannot be used for fuel");

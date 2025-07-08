@@ -29,8 +29,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class BaseAndroidEntity extends PathAwareEntity {

@@ -27,11 +27,6 @@ repositories {
 	}
 
 	maven {
-		name = "Ladysnake Mods"
-		url = "https://maven.ladysnake.org/releases"
-	}
-
-	maven {
 		url "https://jitpack.io"
 	}
 }

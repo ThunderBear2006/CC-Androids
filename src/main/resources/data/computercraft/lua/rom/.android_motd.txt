@@ -1,0 +1,6 @@
+Androids need fuel for some actions like moving; Feed your workers their redstone!
+You can click on an android while crouching to give it the item you are holding.
+Androids love flowers.
+Use a wrench on an android to deconstruct them and get back resources.
+Advanced androids and command androids are faster than normal androids and can detect things further away.
+Want your androids to show a little emotion? Use android.changeFace(face_name) to change the face display on their screen.
