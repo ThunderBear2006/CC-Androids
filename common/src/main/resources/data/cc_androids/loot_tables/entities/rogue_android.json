@@ -1,0 +1,25 @@
+{
+  "type": "cc_androids:rogue_android",
+  "pools": [
+    {
+      "rolls": 3,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "cc_androids:android_cpu",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "cc_androids:components",
+          "weight": 50
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:iron_ingot",
+          "weight": 10
+        }
+      ]
+    }
+  ]
+}

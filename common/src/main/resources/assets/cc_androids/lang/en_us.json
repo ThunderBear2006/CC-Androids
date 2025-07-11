@@ -1,0 +1,27 @@
+{
+  "entity.cc_androids.android": "Android",
+  "entity.cc_androids.advanced_android": "Advanced Android",
+  "entity.cc_androids.command_android": "Command Android",
+  "entity.cc_androids.rogue_android": "Rogue Android",
+  "entity.cc_androids.unfinished_android": "Android Scaffolding",
+  "entity.cc_androids.android.locked": "Android is locked",
+
+  "item.cc_androids.components": "Components",
+  "item.cc_androids.android_cpu": "Android CPU",
+  "item.cc_androids.redstone_reactor": "Redstone Reactor",
+  "item.cc_androids.android_frame": "Android Frame",
+  "item.cc_androids.wrench": "Wrench",
+
+  "item.cc_androids.android_spawn": "Android Spawn",
+  "item.cc_androids.android_advanced_spawn": "Advanced Android Spawn",
+  "item.cc_androids.android_command_spawn": "Command Android Spawn",
+  "item.cc_androids.android_rogue_spawn": "Rogue Android Spawn",
+
+  "itemGroup.cc_androids.android_item_group": "CC:Androids",
+
+  "sound.cc_androids.android_ambient": "Android beeps and boops",
+  "sound.cc_androids.android_hurt": "Android takes damage",
+  "sound.cc_androids.android_death": "Android perishes",
+
+  "gui.cc_androids.tooltip.wrench": "I'm sure you haven't seen this somewhere before"
+}
