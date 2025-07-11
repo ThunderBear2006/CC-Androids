@@ -8,6 +8,7 @@ import com.thunderbear06.config.ConfigLoader;
 import com.thunderbear06.entity.EntityRegistry;
 import com.thunderbear06.item.ItemRegistry;
 import com.thunderbear06.menu.MenuRegistry;
+import com.thunderbear06.recipe.RecipeRegistry;
 import com.thunderbear06.sounds.SoundRegistry;
 import dan200.computercraft.api.ComputerCraftAPI;
 import org.slf4j.Logger;
@@ -33,5 +34,6 @@ public class CCAndroids {
 		EntityRegistry.register();
 		ItemRegistry.register();
 		SoundRegistry.register();
+		RecipeRegistry.register();
 	}
 }

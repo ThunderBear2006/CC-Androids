@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "cc_androids:wrench_shaped",
   "pattern": [
     "WII",
     "GGC",

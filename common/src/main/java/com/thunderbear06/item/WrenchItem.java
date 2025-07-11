@@ -23,20 +23,6 @@ public class WrenchItem extends Item {
     }
 
     @Override
-    public boolean hasRecipeRemainder() {
-        return true;
-    }
-
-// FIXME: make me platform agnostic
-//    @Override
-//    public ItemStack getRecipeRemainder(ItemStack stack) {
-//        stack.setDamage(stack.getDamage()+1);
-//        if (stack.getDamage() >= stack.getMaxDamage())
-//            return ItemStack.EMPTY;
-//        return stack.copyWithCount(1);
-//    }
-
-    @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
         if (entity instanceof CommandAndroidEntity)
             return ActionResult.FAIL;
