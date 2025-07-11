@@ -2,6 +2,7 @@ package com.thunderbear06.item;
 
 import com.thunderbear06.CCAndroids;
 import com.thunderbear06.entity.EntityRegistry;
+import dev.architectury.platform.Platform;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -30,19 +31,23 @@ public class ItemRegistry {
     public static final RegistrySupplier<Item> REDSTONE_REACTOR = ITEMS.register("redstone_reactor", () -> new Item(new Item.Settings().arch$tab(ANDROIDS_ITEM_GROUP)));
     public static final RegistrySupplier<Item> ANDROID_FRAME = ITEMS.register("android_frame", () -> new AndroidFrameItem(new Item.Settings().arch$tab(ANDROIDS_ITEM_GROUP)));
 
-// FIXME: breaks on startup on forge
-//    public static final RegistrySupplier<Item> ANDROID_SPAWN_EGG = registerEgg(EntityRegistry.ANDROID_ENTITY, 0xb2b2b2,0x8a8c8b, "android_spawn");
-//    public static final RegistrySupplier<Item> ANDROID_ADVANCED_SPAWN_EGG = registerEgg(EntityRegistry.ADVANCED_ANDROID_ENTITY, 0xb2b2b2,0xa5a333, "android_advanced_spawn");
-//    public static final RegistrySupplier<Item> ANDROID_COMMAND_SPAWN_EGG = registerEgg(EntityRegistry.COMMAND_ANDROID_ENTITY, 0xfc9e46,0x9b5c22, "android_command_spawn");
-//    public static final RegistrySupplier<Item> ANDROID_ROGUE_SPAWN_EGG = registerEgg(EntityRegistry.ROGUE_ANDROID_ENTITY, 0xf41818,0x9b2222, "android_rogue_spawn");
-//
-//    private static RegistrySupplier<Item> registerEgg(RegistrySupplier<? extends EntityType<? extends MobEntity>> entityType, int color1, int color2, String path) {
-//        return ITEMS.register(path, () -> new SpawnEggItem(entityType.get(), color1, color2, new Item.Settings().arch$tab(ANDROIDS_ITEM_GROUP)));
-//    }
+    public static final DeferredRegister<Item> SPAWN_EGGS = DeferredRegister.create(CCAndroids.MOD_ID, RegistryKeys.ITEM);
+
+    public static final RegistrySupplier<Item> ANDROID_SPAWN_EGG = registerEgg(EntityRegistry.ANDROID_ENTITY, 0xb2b2b2,0x8a8c8b, "android_spawn");
+    public static final RegistrySupplier<Item> ANDROID_ADVANCED_SPAWN_EGG = registerEgg(EntityRegistry.ADVANCED_ANDROID_ENTITY, 0xb2b2b2,0xa5a333, "android_advanced_spawn");
+    public static final RegistrySupplier<Item> ANDROID_COMMAND_SPAWN_EGG = registerEgg(EntityRegistry.COMMAND_ANDROID_ENTITY, 0xfc9e46,0x9b5c22, "android_command_spawn");
+    public static final RegistrySupplier<Item> ANDROID_ROGUE_SPAWN_EGG = registerEgg(EntityRegistry.ROGUE_ANDROID_ENTITY, 0xf41818,0x9b2222, "android_rogue_spawn");
+
+    private static RegistrySupplier<Item> registerEgg(RegistrySupplier<? extends EntityType<? extends MobEntity>> entityType, int color1, int color2, String path) {
+        return SPAWN_EGGS.register(path, () -> new SpawnEggItem(entityType.get(), color1, color2, new Item.Settings().arch$tab(ANDROIDS_ITEM_GROUP)));
+    }
 
     public static void register() {
         ITEMS.register();
         ITEM_GROUPS.register();
+        if (Platform.isFabric()) {
+            SPAWN_EGGS.register(); // Forge crashes since items are registered before entities
+        }
         CCAndroids.LOGGER.info("Registered Items");
     }
 }
