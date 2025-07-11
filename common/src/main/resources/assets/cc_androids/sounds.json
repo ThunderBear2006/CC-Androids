@@ -1,0 +1,25 @@
+{
+  "android_ambient": {
+    "subtitle": "sound.cc_androids.android_ambient",
+    "sounds": [
+      "cc_androids:android_1",
+      "cc_androids:android_2",
+      "cc_androids:android_3",
+      "cc_androids:android_4"
+    ]
+  },
+  "android_hurt": {
+    "subtitles": "sound.cc_androids.android_ambient",
+    "sounds": [
+      "cc_androids:android_hurt_1",
+      "cc_androids:android_hurt_2",
+      "cc_androids:android_hurt_3"
+    ]
+  },
+  "android_death": {
+    "subtitles": "sound.cc-android.android_died",
+    "sounds": [
+      "cc_androids:android_death"
+    ]
+  }
+}
