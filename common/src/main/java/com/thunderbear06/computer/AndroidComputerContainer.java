@@ -32,7 +32,7 @@ import java.util.UUID;
 public class AndroidComputerContainer {
     private final BaseAndroidEntity android;
 
-    public String label = "";
+    public Text label = Text.translatable("entity.cc_androids.android");
     public boolean isOn = false;
     public boolean fresh = false;
 
@@ -97,23 +97,23 @@ public class AndroidComputerContainer {
 
         PlatformHelper.get().openMenu(
                 player,
-                Text.literal(label),
+                label,
                 (syncId, playerInventory, player1) -> AndroidMenu.ofBrain(syncId, playerInventory, getBrain()),
                 new ComputerContainerData(computer, ItemStack.EMPTY)
         );
     }
 
     protected void updateOwnerLabel(ServerComputer computer) {
-        if (!Objects.equals(label, computer.getLabel())) {
-            label = computer.getLabel();
+        String computerLabel = computer.getLabel();
 
-            if (label == null || label.isEmpty()){
-                android.setCustomName(Text.empty());
-                android.setCustomNameVisible(false);
-            } else {
-                android.setCustomName(Text.literal(label));
-                android.setCustomNameVisible(true);
-            }
+        if (!label.toString().equals(computerLabel)) {
+
+            if (computerLabel == null || computerLabel.isEmpty())
+                label = Text.translatable("entity.cc_androids.android");
+            else
+                label = Text.literal(computerLabel);
+
+            android.setCustomName(label);
         }
     }
 
@@ -176,7 +176,7 @@ public class AndroidComputerContainer {
     protected EntityComputer createComputer(int id) {
         ServerComputer.Properties properties = ServerComputer.properties(id, getFamily())
                 .addComponent(ComputerComponents.ANDROID_COMPUTER, android.brain)
-                .label(label)
+                .label(label.toString())
                 .terminalSize(Config.TURTLE_TERM_WIDTH, Config.TURTLE_TERM_HEIGHT);
 
         return new EntityComputer((ServerWorld)android.getWorld(), android, properties);
