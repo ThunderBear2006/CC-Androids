@@ -28,7 +28,7 @@ public class MiningModule extends AbstractAndroidModule {
     }
 
     public void resetBreakProgress(BlockPos pos) {
-        this.android.getWorld().setBlockBreakingInfo(this.android.getId(), pos, 0);
+        this.android.getWorld().setBlockBreakingInfo(this.android.getId(), pos, -1);
         this.breakProgress = 0.0f;
     }
 
