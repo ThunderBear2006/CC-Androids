@@ -1,0 +1,28 @@
+{
+  "type": "cc_androids:wrench_shaped",
+  "pattern": [
+    "WII",
+    "GGC",
+    "CRR"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "W": {
+      "item": "cc_androids:wrench"
+    }
+  },
+  "result": {
+    "item": "cc_androids:components"
+  }
+}
