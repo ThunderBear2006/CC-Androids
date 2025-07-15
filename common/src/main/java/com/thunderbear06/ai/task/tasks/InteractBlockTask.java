@@ -7,8 +7,8 @@ import net.minecraft.util.math.BlockPos;
 public class InteractBlockTask extends MoveToBlockTask{
     private boolean complete = false;
 
-    public InteractBlockTask(AndroidEntity android, double moveSpeed) {
-        super(android, moveSpeed);
+    public InteractBlockTask(AndroidEntity android, double moveSpeed, BlockPos pos) {
+        super(android, moveSpeed, pos);
     }
 
     @Override
@@ -23,13 +23,13 @@ public class InteractBlockTask extends MoveToBlockTask{
 
     @Override
     public boolean shouldTick() {
-        return super.shouldTick() && !this.complete;
+        return !this.complete;
     }
 
     @Override
     public void tick() {
         if (isInRange(2)) {
-            BlockPos pos = getPos();
+            BlockPos pos = getTarget();
             this.android.getLookControl().lookAt(pos.getX(), pos.getY(), pos.getZ());
             this.android.brain.getModules().interactionModule.interactWithBlock(Hand.MAIN_HAND, pos);
             this.complete = true;

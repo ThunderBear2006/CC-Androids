@@ -3,6 +3,8 @@ package com.thunderbear06.ai;
 import com.mojang.authlib.GameProfile;
 import com.thunderbear06.CCAndroids;
 import com.thunderbear06.ai.modules.AndroidModules;
+import com.thunderbear06.ai.task.Task;
+import com.thunderbear06.ai.task.TaskManager;
 import com.thunderbear06.entity.android.AndroidEntity;
 import com.thunderbear06.entity.player.AndroidPlayer;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,17 +13,17 @@ import net.minecraft.server.world.ServerWorld;
 
 public class AndroidBrain {
     protected final AndroidEntity android;
-    protected final AndroidTargets targeting;
+    protected final TaskManager taskManager;
     protected final AndroidModules modules;
 
     @Deprecated
     public AndroidPlayer fakePlayer;
     private GameProfile owningPlayerProfile;
 
-    public AndroidBrain(AndroidEntity android) {
-        this.android = android;
-        this.targeting = new AndroidTargets();
-        this.modules = new AndroidModules(android, this);
+    public AndroidBrain(AndroidEntity entity) {
+        android = entity;
+        taskManager = new TaskManager();
+        modules = new AndroidModules(entity, this);
 
         if (android.getWorld() instanceof ServerWorld) {
             this.fakePlayer = AndroidPlayer.get(this);
@@ -31,26 +33,27 @@ public class AndroidBrain {
     }
 
     public void onShutdown() {
-        this.targeting.clearTargets();
-        this.android.getTaskManager().clearCurrentTask();
+        taskManager.clearCurrentTask();
     }
 
-    public void setTask(String taskName) {
+    public void setTask(Task task) {
         if (CCAndroids.CONFIG.DebugLogging)
-            CCAndroids.LOGGER.info("Set current android task to {}", taskName);
-        this.android.getTaskManager().setCurrentTask(taskName);
+            CCAndroids.LOGGER.info("Set current android task to {}", task.getName());
+
+        taskManager.setCurrentTask(task);
     }
 
     public AndroidEntity getAndroid() {
         return this.android;
     }
 
-    public AndroidTargets getTargeting() {
-        return this.targeting;
-    }
-
     public AndroidModules getModules() {
         return this.modules;
+    }
+
+    public TaskManager getTaskManager()
+    {
+        return taskManager;
     }
 
     public boolean isOwningPlayer(PlayerEntity player) {

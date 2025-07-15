@@ -5,23 +5,13 @@ import com.thunderbear06.CCAndroids;
 import java.util.HashMap;
 
 public class TaskManager {
-    private final HashMap<String, Task> tasks = new HashMap<>();
     private Task currentTask = null;
 
-    public void addTask(Task task) {
-        this.tasks.put(task.getName(), task);
-    }
-
-    public void setCurrentTask(String taskName) {
-        if (!tasks.containsKey(taskName)) {
-            CCAndroids.LOGGER.error("Unrecognized task name {}", taskName);
-            return;
-        }
-
+    public void setCurrentTask(Task task) {
         if (this.currentTask != null)
             clearCurrentTask();
 
-        this.currentTask = this.tasks.get(taskName);
+        this.currentTask = task;
         this.currentTask.firstTick();
     }
 

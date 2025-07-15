@@ -7,8 +7,8 @@ import net.minecraft.util.math.Vec3d;
 
 public class BreakBlockTask extends MoveToBlockTask{
 
-    public BreakBlockTask(AndroidEntity android, double moveSpeed) {
-        super(android, moveSpeed);
+    public BreakBlockTask(AndroidEntity android, double moveSpeed, BlockPos pos) {
+        super(android, moveSpeed, pos);
     }
 
     @Override
@@ -18,17 +18,17 @@ public class BreakBlockTask extends MoveToBlockTask{
 
     @Override
     public boolean shouldTick() {
-        return android.brain.getModules().miningModule.canMineBlock(getPos());
+        return android.brain.getModules().miningModule.canMineBlock(getTarget());
     }
 
     @Override
     public void tick() {
-        Vec3d pos = getPos().toCenterPos();
+        Vec3d pos = getTarget().toCenterPos();
         this.android.getLookControl().lookAt(pos.getX(), pos.getY(), pos.getZ());
 
         if (isInRange(3)) {
             this.android.swingHand(Hand.MAIN_HAND);
-            this.android.brain.getModules().miningModule.mine(getPos());
+            this.android.brain.getModules().miningModule.mine(getTarget());
         }
         else
             super.tick();
@@ -36,6 +36,6 @@ public class BreakBlockTask extends MoveToBlockTask{
 
     @Override
     public void lastTick() {
-        this.android.brain.getModules().miningModule.resetBreakProgress(getPos());
+        this.android.brain.getModules().miningModule.resetBreakProgress(getTarget());
     }
 }

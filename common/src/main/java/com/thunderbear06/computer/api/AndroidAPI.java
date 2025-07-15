@@ -1,6 +1,10 @@
 package com.thunderbear06.computer.api;
 
 import com.thunderbear06.ai.AndroidBrain;
+import com.thunderbear06.ai.task.tasks.AttackEntityTask;
+import com.thunderbear06.ai.task.tasks.BreakBlockTask;
+import com.thunderbear06.ai.task.tasks.InteractBlockTask;
+import com.thunderbear06.ai.task.tasks.InteractEntityTask;
 import dan200.computercraft.api.lua.*;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -64,7 +68,7 @@ public class AndroidAPI implements ILuaAPI {
 
     @LuaFunction
     public final MethodResult currentTask() {
-        return MethodResult.of(this.brain.getAndroid().getTaskManager().getCurrentTaskName());
+        return MethodResult.of(this.brain.getTaskManager().getCurrentTaskName());
     }
 
     @LuaFunction
@@ -86,8 +90,7 @@ public class AndroidAPI implements ILuaAPI {
         if (target == null)
             return MethodResult.of(true, "Unknown entity or invalid UUID");
 
-        this.brain.getTargeting().setEntityTarget(target);
-        this.brain.setTask("attacking");
+        this.brain.setTask(new AttackEntityTask(brain.getAndroid(), 0.5, target));
         return MethodResult.of();
     }
 
@@ -120,8 +123,7 @@ public class AndroidAPI implements ILuaAPI {
         if (!this.brain.getAndroid().getWorld().isInBuildLimit(pos))
             return MethodResult.of(true, "Block position must be in world build limit");
 
-        this.brain.getTargeting().setBlockTarget(pos);
-        this.brain.setTask("breakingBlock");
+        this.brain.setTask(new BreakBlockTask(brain.getAndroid(), 0.5, pos));
         return MethodResult.of();
     }
 
@@ -134,8 +136,7 @@ public class AndroidAPI implements ILuaAPI {
         if (!this.brain.getAndroid().getWorld().isInBuildLimit(pos))
             return MethodResult.of(true, "Block position must be in world build limit");
 
-        this.brain.getTargeting().setBlockTarget(pos);
-        this.brain.setTask("usingBlock");
+        this.brain.setTask(new InteractBlockTask(brain.getAndroid(), 0.5, pos));
         return MethodResult.of();
     }
 
@@ -149,8 +150,7 @@ public class AndroidAPI implements ILuaAPI {
         if (target == null || target.isRemoved())
             return MethodResult.of(true, "Unknown entity or invalid UUID");
 
-        this.brain.getTargeting().setEntityTarget(target);
-        this.brain.setTask("usingEntity");
+        this.brain.setTask(new InteractEntityTask(brain.getAndroid(), 0.5, target));
         return MethodResult.of();
     }
 
@@ -368,7 +368,7 @@ public class AndroidAPI implements ILuaAPI {
 
     @LuaFunction
     public final MethodResult cancelTask() {
-        this.brain.getAndroid().getTaskManager().clearCurrentTask();
+        this.brain.getTaskManager().clearCurrentTask();
         return MethodResult.of();
     }
 }

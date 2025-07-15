@@ -35,7 +35,6 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class AndroidEntity extends BaseAndroidEntity {
-    protected final TaskManager taskManager;
     private static final TrackedData<Boolean> IS_LOCKED = DataTracker.registerData(AndroidEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Byte> VARIANT = DataTracker.registerData(AndroidEntity.class, TrackedDataHandlerRegistry.BYTE);
     private static final TrackedData<Byte> FACE = DataTracker.registerData(AndroidEntity.class, TrackedDataHandlerRegistry.BYTE);
@@ -44,10 +43,8 @@ public class AndroidEntity extends BaseAndroidEntity {
         super(entityType, world);
 
         this.brain = new AndroidBrain(this);
-        this.taskManager = new TaskManager();
         this.computerContainer.setFamily(ComputerFamily.NORMAL);
 
-        addAndroidTasks();
         initAndroidGoals();
     }
 
@@ -67,15 +64,6 @@ public class AndroidEntity extends BaseAndroidEntity {
                 .add(EntityAttributes.GENERIC_ARMOR, CCAndroids.CONFIG.AndroidArmor);
     }
 
-    protected void addAndroidTasks() {
-        this.taskManager.addTask(new AttackEntityTask(this, 0.5f));
-        this.taskManager.addTask(new BreakBlockTask(this, 0.5f));
-        this.taskManager.addTask(new InteractBlockTask(this, 0.5f));
-        this.taskManager.addTask(new InteractEntityTask(this, 0.5f));
-        this.taskManager.addTask(new MoveToBlockTask(this, 0.5f));
-        this.taskManager.addTask(new MoveToEntityTask(this, 0.5f));
-    }
-
     protected void initAndroidGoals() {
         this.goalSelector.add(0, new AndroidLookAtEntityGoal(this, PlayerEntity.class, 10));
     }
@@ -85,14 +73,14 @@ public class AndroidEntity extends BaseAndroidEntity {
         super.tickMovement();
 
         if (hasFuel())
-            this.taskManager.tick();
+            brain.getTaskManager().tick();
         else if (!this.getNavigation().isIdle())
             this.getNavigation().stop();
     }
 
     @Override
     protected boolean isIdle() {
-        return !this.taskManager.hasTask();
+        return !brain.getTaskManager().hasTask();
     }
 
     @Override
@@ -208,10 +196,6 @@ public class AndroidEntity extends BaseAndroidEntity {
 
         this.setStackInHand(Hand.MAIN_HAND, stack);
         return heldStack;
-    }
-
-    public TaskManager getTaskManager() {
-        return this.taskManager;
     }
 
     public boolean repair(ItemStack stack) {

@@ -2,17 +2,21 @@ package com.thunderbear06.ai.task.tasks;
 
 import com.thunderbear06.ai.task.Task;
 import com.thunderbear06.entity.android.AndroidEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 
 public abstract class EntityBasedTask extends Task {
+    private final LivingEntity targetEntity;
 
-    public EntityBasedTask(AndroidEntity android) {
+    public EntityBasedTask(AndroidEntity android, LivingEntity entity) {
         super(android);
+
+        targetEntity = entity;
     }
 
     @Override
     public boolean shouldTick() {
-        return this.android.brain.getTargeting().hasEntityTarget();
+        return targetEntity.isAlive();
     }
 
     @Override
@@ -25,6 +29,6 @@ public abstract class EntityBasedTask extends Task {
     }
 
     protected LivingEntity getTarget() {
-        return this.android.brain.getTargeting().getEntityTarget();
+        return targetEntity;
     }
 }

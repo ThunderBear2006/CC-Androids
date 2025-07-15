@@ -7,8 +7,8 @@ import net.minecraft.util.Hand;
 public class AttackEntityTask extends MoveToEntityTask {
     private int attackCooldown;
 
-    public AttackEntityTask(AndroidEntity android, double moveSpeed) {
-        super(android, moveSpeed);
+    public AttackEntityTask(AndroidEntity android, double moveSpeed, LivingEntity entity) {
+        super(android, moveSpeed, entity);
     }
 
     @Override
@@ -18,7 +18,7 @@ public class AttackEntityTask extends MoveToEntityTask {
 
     @Override
     public boolean shouldTick() {
-        return this.android.brain.getTargeting().hasEntityTarget();
+        return getTarget().isAlive();
     }
 
     @Override
@@ -36,6 +36,7 @@ public class AttackEntityTask extends MoveToEntityTask {
         this.attackCooldown = 10;
 
         LivingEntity target = getTarget();
+
         this.android.getLookControl().lookAt(target);
         this.android.swingHand(Hand.MAIN_HAND);
         this.android.tryAttack(target);

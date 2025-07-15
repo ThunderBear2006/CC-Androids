@@ -15,11 +15,11 @@ public class AndroidLookAtEntityGoal extends LookAtEntityGoal {
 
     @Override
     public boolean shouldContinue() {
-        return !brain.getTargeting().hasAnyTarget() && super.shouldContinue();
+        return !brain.getTaskManager().hasTask() && super.shouldContinue();
     }
 
     @Override
     public boolean canStart() {
-        return !brain.getTargeting().hasAnyTarget() && super.canStart();
+        return !brain.getTaskManager().hasTask() && super.canStart();
     }
 }
