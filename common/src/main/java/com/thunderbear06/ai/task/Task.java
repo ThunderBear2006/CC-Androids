@@ -2,16 +2,19 @@ package com.thunderbear06.ai.task;
 
 import com.thunderbear06.entity.android.AndroidEntity;
 
-public abstract class Task {
+public abstract class Task
+{
     protected final AndroidEntity android;
 
-    public Task(AndroidEntity android) {
+    public Task(AndroidEntity android)
+    {
         this.android = android;
     }
 
     public abstract String getName();
 
-    public boolean shouldTick() {
+    public boolean shouldTick()
+    {
         return false;
     }
 

@@ -1,13 +1,11 @@
 package com.thunderbear06.ai.task;
 
-import com.thunderbear06.CCAndroids;
-
-import java.util.HashMap;
-
-public class TaskManager {
+public class TaskManager
+{
     private Task currentTask = null;
 
-    public void setCurrentTask(Task task) {
+    public void setCurrentTask(Task task)
+    {
         if (this.currentTask != null)
             clearCurrentTask();
 
@@ -15,23 +13,28 @@ public class TaskManager {
         this.currentTask.firstTick();
     }
 
-    public String getCurrentTaskName() {
+    public String getCurrentTaskName()
+    {
         return this.currentTask == null ? "idle" : this.currentTask.getName();
     }
 
-    public void clearCurrentTask() {
+    public void clearCurrentTask()
+    {
         if (this.currentTask == null)
             return;
         this.currentTask.lastTick();
         this.currentTask = null;
     }
 
-    public void tick() {
-        if (this.currentTask == null) {
+    public void tick()
+    {
+        if (this.currentTask == null)
+        {
             return;
         }
 
-        if (this.currentTask.shouldTick()) {
+        if (this.currentTask.shouldTick())
+        {
             this.currentTask.tick();
             return;
         }
@@ -39,7 +42,8 @@ public class TaskManager {
         clearCurrentTask();
     }
 
-    public boolean hasTask() {
-        return this.currentTask != null;
+    public boolean isIdle()
+    {
+        return this.currentTask == null;
     }
 }

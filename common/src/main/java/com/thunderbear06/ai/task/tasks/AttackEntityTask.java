@@ -4,25 +4,30 @@ import com.thunderbear06.entity.android.AndroidEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Hand;
 
-public class AttackEntityTask extends MoveToEntityTask {
+public class AttackEntityTask extends MoveToEntityTask
+{
     private int attackCooldown;
 
-    public AttackEntityTask(AndroidEntity android, double moveSpeed, LivingEntity entity) {
+    public AttackEntityTask(AndroidEntity android, double moveSpeed, LivingEntity entity)
+    {
         super(android, moveSpeed, entity);
     }
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return "attacking";
     }
 
     @Override
-    public boolean shouldTick() {
+    public boolean shouldTick()
+    {
         return getTarget().isAlive();
     }
 
     @Override
-    public void tick() {
+    public void tick()
+    {
         if (this.attackCooldown-- > 0)
             return;
 
@@ -32,7 +37,8 @@ public class AttackEntityTask extends MoveToEntityTask {
             super.tick();
     }
 
-    private void attack() {
+    private void attack()
+    {
         this.attackCooldown = 10;
 
         LivingEntity target = getTarget();

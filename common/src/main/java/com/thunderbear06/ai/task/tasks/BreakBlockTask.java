@@ -5,24 +5,29 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class BreakBlockTask extends MoveToBlockTask{
+public class BreakBlockTask extends MoveToBlockTask
+{
 
-    public BreakBlockTask(AndroidEntity android, double moveSpeed, BlockPos pos) {
+    public BreakBlockTask(AndroidEntity android, double moveSpeed, BlockPos pos)
+    {
         super(android, moveSpeed, pos);
     }
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return "breakingBlock";
     }
 
     @Override
-    public boolean shouldTick() {
+    public boolean shouldTick()
+    {
         return android.brain.getModules().miningModule.canMineBlock(getTarget());
     }
 
     @Override
-    public void tick() {
+    public void tick()
+    {
         Vec3d pos = getTarget().toCenterPos();
         this.android.getLookControl().lookAt(pos.getX(), pos.getY(), pos.getZ());
 
@@ -35,7 +40,8 @@ public class BreakBlockTask extends MoveToBlockTask{
     }
 
     @Override
-    public void lastTick() {
+    public void lastTick()
+    {
         this.android.brain.getModules().miningModule.resetBreakProgress(getTarget());
     }
 }

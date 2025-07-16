@@ -11,7 +11,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 
-public class AndroidBrain {
+public class AndroidBrain
+{
     protected final AndroidEntity android;
     protected final TaskManager taskManager;
     protected final AndroidModules modules;
@@ -20,34 +21,42 @@ public class AndroidBrain {
     public AndroidPlayer fakePlayer;
     private GameProfile owningPlayerProfile;
 
-    public AndroidBrain(AndroidEntity entity) {
+    public AndroidBrain(AndroidEntity entity)
+    {
         android = entity;
         taskManager = new TaskManager();
         modules = new AndroidModules(entity, this);
 
-        if (android.getWorld() instanceof ServerWorld) {
+        if (android.getWorld() instanceof ServerWorld)
+        {
             this.fakePlayer = AndroidPlayer.get(this);
-        } else {
+        }
+        else
+        {
             this.fakePlayer = null;
         }
     }
 
-    public void onShutdown() {
+    public void onShutdown()
+    {
         taskManager.clearCurrentTask();
     }
 
-    public void setTask(Task task) {
+    public void setTask(Task task)
+    {
         if (CCAndroids.CONFIG.DebugLogging)
             CCAndroids.LOGGER.info("Set current android task to {}", task.getName());
 
         taskManager.setCurrentTask(task);
     }
 
-    public AndroidEntity getAndroid() {
+    public AndroidEntity getAndroid()
+    {
         return this.android;
     }
 
-    public AndroidModules getModules() {
+    public AndroidModules getModules()
+    {
         return this.modules;
     }
 
@@ -56,19 +65,23 @@ public class AndroidBrain {
         return taskManager;
     }
 
-    public boolean isOwningPlayer(PlayerEntity player) {
+    public boolean isOwningPlayer(PlayerEntity player)
+    {
         return this.owningPlayerProfile == player.getGameProfile();
     }
 
-    public GameProfile getOwningPlayerProfile() {
+    public GameProfile getOwningPlayerProfile()
+    {
         return this.owningPlayerProfile;
     }
 
-    public void setOwningPlayer(GameProfile gameProfile) {
+    public void setOwningPlayer(GameProfile gameProfile)
+    {
         this.owningPlayerProfile = gameProfile;
     }
 
-    public void writeNbt(NbtCompound computerCompound) {
+    public void writeNbt(NbtCompound computerCompound)
+    {
         if (this.owningPlayerProfile == null)
             return;
 
@@ -76,7 +89,8 @@ public class AndroidBrain {
         computerCompound.putString("OwningPlayerName", this.owningPlayerProfile.getName());
     }
 
-    public void readNbt(NbtCompound computerCompound) {
+    public void readNbt(NbtCompound computerCompound)
+    {
         if (!computerCompound.contains("OwningPlayerUUID"))
             return;
 
