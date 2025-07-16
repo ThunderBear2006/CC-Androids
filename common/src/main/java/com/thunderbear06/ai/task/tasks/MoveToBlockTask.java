@@ -25,7 +25,7 @@ public class MoveToBlockTask extends BlockBasedTask
     @Override
     public boolean shouldTick()
     {
-        return !isInRange(1);
+        return !isInRange(2);
     }
 
     @Override

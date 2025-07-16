@@ -1,26 +1,42 @@
--- The android will attempt to move to the players position.
-local function followPlayer()
-    local player = android.getClosestPlayer()
+-- Get information about the android.
+local androidInfo = android.getSelf()
 
-    -- UUIDs are unique identifiers that are used to
-    -- reference and keep track of entities in the game.
-    local playerUUID = player["uuid"]
+-- Store the position information as a "home" position for later use.
+local homePosition = {x = androidInfo.posX, y = androidInfo.posY, z = androidInfo.posZ}
 
-    print("Following closest player. \n Press ENTER to stop following.")
+-- This is a table or list of names of mob types to search for and attack.
+local targetTypes = {"zombie", "skeleton", "spider"}
+
+local function guard()
+    print("Guarding location. \n Press ENTER to stop guarding.")
 
     while true do
-        -- We can find out what the android
-        -- is currently doing by calling android.currentTask()
-        -- which will return a string to describe the action.
-        local currentTask = android.currentTask()
-
-        -- If the android is idle (not moving) then
-        -- tell it to start moving to the player.
-        if currentTask == "idle" then
-            android.goTo(playerUUID)
+        -- If the android is attacking
+        -- then skip for now.
+        if android.currentTask() == "attackingMob" then
+            goto pass
         end
 
-        -- Yield so that we can listen for terminal input.
+        -- Iterate over the table of target types
+        -- to search for a mob that matches a type.
+        for _,type in ipairs(targetTypes) do
+            local mob = android.getClosestMob(type)
+
+            -- If the uuid is not nil then we have found a mob
+            if mob["uuid"] ~= nil then
+                -- Tell the android to attack the mob and skip to the next loop.
+                android.attack(mob["uuid"])
+
+                goto pass
+            end
+        end
+
+        -- Head home if no mob was found.
+        android.moveTo(homePosition)
+
+        ::pass::
+
+        -- Sleep to allow reading terminal input.
         sleep()
     end
 end
@@ -43,7 +59,7 @@ local function listenForCancel()
         end
     end
 
-    print("Cancel key pressed, stopping android from following player.")
+    print("Cancel key pressed, stopping android from guarding.")
 end
 
 -- Androids cannot move without fuel so we check if
@@ -71,7 +87,7 @@ if not checkFuel() then
     return
 end
 
-parallel.waitForAny(followPlayer, listenForCancel)
+parallel.waitForAny(guard, listenForCancel)
 
 -- The android might still be moving
 -- when the program is about to quit

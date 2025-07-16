@@ -111,9 +111,6 @@ public class SensorModule extends AbstractAndroidModule {
     }
 
     public HashMap<String, Object> collectEntityInfo(Entity entity) throws LuaException {
-        if (!entity.getBlockPos().isWithinDistance(android.getPos(), android.getEntitySearchRadius()))
-            throw new LuaException("Entity out of range");
-
         HashMap<String, Object> infoMap = new HashMap<>();
 
         infoMap.put("uuid", entity.getUuidAsString());
